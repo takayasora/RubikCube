@@ -37,11 +37,19 @@ color_index_edge = {
     24 : ["れ", Color.RED, Color.GREEN]
 }
 
+import romajitable
 import random
 
-for i in range(1,10):
-    rand_num = random.randint(1,24)
-    for name, colorA, colorB in [color_index_edge[rand_num]]:
-        print(name,end="")
-        print_color_edge(colorA,colorB)
-        print()
+for i in range(1, 10):
+    rand_num = random.randint(1, 24)
+    name, colorA, colorB = color_index_edge[rand_num]
+    print_color_edge(colorA, colorB)
+    
+    result = romajitable.to_kana(input())
+    hiraganed = result.hiragana
+
+    
+    if hiraganed == name:
+        print("OK")
+    else:
+        print("NG", name)

@@ -40,9 +40,22 @@ color_index_corner = {
 
 import random
 
-for i in range(1,10):
-    rand_num = random.randint(1,24)
-    for name, colorA, colorB, colorC in [color_index_corner[rand_num]]:
-        print(name,end="")
-        print_color_corner(colorA, colorB, colorC)
-        print()
+import romkan
+
+def roma_to_hiragana(roma_string):
+    try:
+        hiragana_string = romkan.to_hiragana(roma_string)
+        return hiragana_string
+    except:
+        return roma_string
+    
+for i in range(1, 10):
+    rand_num = random.randint(1, 24)
+    name, colorA, colorB, colorC = color_index_corner[rand_num]
+    print_color_corner(colorA, colorB, colorC)
+    roma_input = input()
+    hiragana_output = roma_to_hiragana(roma_input)
+    if hiragana_output == name:
+        print("OK")
+    else:
+        print("NG", name)
