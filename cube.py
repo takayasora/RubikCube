@@ -1,3 +1,5 @@
+import csv
+import time
 import playsound
 import random
 import romajitable
@@ -11,6 +13,8 @@ class Color:
     ORANGE = "\033[48;2;243;156;14m　\033[0m"
         
 def corner_exam(qestion_num):
+    # 開始時刻を記録
+    start_time = time.time()
     color_index_corner = {
         1 : ["あ", Color.WHITE, Color.BLUE, Color.ORANGE],
         2 : ["い", Color.YELLOW, Color.ORANGE, Color.BLUE],
@@ -61,11 +65,13 @@ def corner_exam(qestion_num):
         ans = roma_to_hiragana(input())    
         if ans == name:
             print("OK", name)
-            playmp3_ok()
+            #playmp3_ok()
         else:
             print("NG", name)
 
+
 def edge_exam(qestion_num):
+    start_time = time.time()
     def print_color_edge(color_codeA,color_codeB):
         print(color_codeA, end="")
         print(color_codeB, end="")
@@ -107,7 +113,7 @@ def edge_exam(qestion_num):
     
     def playmp3_ok():
         playsound.playsound("./resource/Quiz-Correct.mp3")
-    
+            
     for i in range(qestion_num):
         rand_num = random.randint(1, 24)
         name, colorA, colorB = color_index_edge[rand_num]
@@ -115,8 +121,7 @@ def edge_exam(qestion_num):
         ans = roma_to_hiragana(input())    
         if ans == name:
             print("OK", name)
-            playmp3_ok()
+            #playmp3_ok()
         else:
             print("NG", name)
-    
-edge_exam(3)
+
