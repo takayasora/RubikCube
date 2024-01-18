@@ -58,6 +58,14 @@ def corner_exam(qestion_num):
     def playmp3_ok():
         playsound.playsound("./resource/Quiz-Correct.mp3")
     
+    def addcsv_corner(text):
+        csv_file_path = "score_corner.csv"
+        # CSVファイルを開いてデータを追加
+        with open(csv_file_path, mode='a', newline='') as file:
+            csv_writer = csv.writer(file)
+            csv_writer.writerow([text])  # データをリストに包む
+
+    flag=0
     for i in range(qestion_num):
         rand_num = random.randint(1, 24)
         name, colorA, colorB, colorC = color_index_corner[rand_num]
@@ -65,9 +73,19 @@ def corner_exam(qestion_num):
         ans = roma_to_hiragana(input())    
         if ans == name:
             print("OK", name)
+            flag=flag+1
             #playmp3_ok()
         else:
             print("NG", name)
+    if flag==qestion_num:
+        #全問正解の時にここに来る。
+        end_time = time.time()
+        execution_time = end_time - start_time
+        ave = execution_time / int(qestion_num)
+        addcsv_corner(ave)
+        print("Ans/Sec",ave)
+    else:
+        print("ミスがありました。")
 
 
 def edge_exam(qestion_num):
@@ -113,7 +131,15 @@ def edge_exam(qestion_num):
     
     def playmp3_ok():
         playsound.playsound("./resource/Quiz-Correct.mp3")
-            
+    
+    def addcsv_edge(text):
+        csv_file_path = "score_edge.csv"
+        # CSVファイルを開いてデータを追加
+        with open(csv_file_path, mode='a', newline='') as file:
+            csv_writer = csv.writer(file)
+            csv_writer.writerow([text])  # データをリストに包む
+          
+    flag=0
     for i in range(qestion_num):
         rand_num = random.randint(1, 24)
         name, colorA, colorB = color_index_edge[rand_num]
@@ -121,7 +147,63 @@ def edge_exam(qestion_num):
         ans = roma_to_hiragana(input())    
         if ans == name:
             print("OK", name)
+            flag=flag+1
             #playmp3_ok()
         else:
             print("NG", name)
+    if flag==qestion_num:
+        #全問正解の時にここに来る。
+        end_time = time.time()
+        execution_time = end_time - start_time
+        ave = execution_time / int(qestion_num)
+        addcsv_edge(ave)
+        print("Ans/Sec",ave)
+    else:
+        print("ミスがありました。")
 
+def score_view():
+    import csv
+    import matplotlib.pyplot as plt
+
+    # CSVファイル名
+    filename_edge = "score_edge.csv"
+    filename_corner = "score_corner.csv"
+
+    # score_edge.csvからデータを読み込む
+    with open(filename_edge, mode='r', newline='', encoding='utf-8') as file:
+        reader = csv.reader(file)
+        data_edge = [float(row[0]) for row in reader]
+
+    # score_corner.csvからデータを読み込む
+    with open(filename_corner, mode='r', newline='', encoding='utf-8') as file:
+        reader = csv.reader(file)
+        data_corner = [float(row[0]) for row in reader]
+
+    # データのインデックスを作成（X軸のラベルとして使用）
+    indexes_edge = range(1, len(data_edge) + 1)
+    indexes_corner = range(1, len(data_corner) + 1)
+
+    # 図のサイズを設定 (幅, 高さ)
+    plt.figure(figsize=(10, 8))  # 変更点: 図のサイズを指定
+
+    # サブプロットを設定（2行1列の1番目）
+    plt.subplot(2, 1, 1)
+    plt.plot(indexes_edge, data_edge, marker='o', color='blue')
+    plt.title('Edge Scores')
+    plt.xlabel('Index')
+    plt.ylabel('Score')
+    plt.grid(True)
+
+    # サブプロットを設定（2行1列の2番目）
+    plt.subplot(2, 1, 2)
+    plt.plot(indexes_corner, data_corner, marker='x', color='red')
+    plt.title('Corner Scores')
+    plt.xlabel('Index')
+    plt.ylabel('Score')
+    plt.grid(True)
+
+    # サブプロット間の余白を調整
+    plt.tight_layout()
+
+    # グラフを表示
+    plt.show()
